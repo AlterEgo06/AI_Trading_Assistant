@@ -1,0 +1,7 @@
+{
+    "use_chatgpt": true,
+    "multi_timeframe_analysis": true,
+    "enable_tradingview": true,
+    "enable_yahoo_finance": true,
+    "enable_metatrader": false
+}
