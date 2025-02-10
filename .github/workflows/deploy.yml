@@ -29,5 +29,5 @@ jobs:
           git config --global user.email "bot@github.com"
           git config --global user.name "AI_Bot"
           git add .
-          git commit -m "Auto-update AI Trading Assistant"
-          git push origin mainp
+          git commit -m "Auto-update AI Trading Assistant" || echo "No changes to commit"
+          git push origin main
