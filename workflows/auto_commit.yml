@@ -1,0 +1,44 @@
+name: Auto Deploy & Update
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 * * * *"  # Exécute toutes les heures
+  workflow_dispatch:  # Permet de le lancer manuellement
+
+jobs:
+  update_code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "bot@github.com"
+          git config --global user.name "AI_Bot"
+
+      - name: Generate or Update Code
+        run: |
+          echo "Mise à jour automatique $(date)" > update_log.txt
+          echo "Code mis à jour par l'IA" > ai_generated_code.py
+
+      - name: Commit and Push Changes
+        env:
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          git add .
+          git commit -m "Auto-update TradeMind AI - $(date)"
+          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/TON-UTILISATEUR/TON-REPO.git main
+
+  deploy:
+    needs: update_code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        env:
+          RENDER_WEBHOOK: ${{ secrets.RENDER_WEBHOOK }}
+        run: |
+          curl -X POST "$RENDER_WEBHOOK" -H "Content-Type: application/json" -d '{}'
